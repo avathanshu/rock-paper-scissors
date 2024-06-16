@@ -58,4 +58,22 @@ function playRound(humanChoice, computerChoice) {
     }
 }
 
-console.log(playRound(getHumanChoice(), getComputerChoice()))
+function playGame() {
+    for (let i = 0; i<5; i++) {
+        playRound(getHumanChoice(), getComputerChoice());
+    }
+    if (humanScore > computerScore) {
+        result = `Congratualtions, you win!`;
+        return result;
+    }
+
+    else {
+        result = `Sorry, you lose!`;
+        return result;
+    }
+}
+
+
+console.log(playGame());
+console.log(humanScore);
+console.log(computerScore);
