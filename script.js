@@ -26,8 +26,9 @@ function getComputerChoice() {
     return choice;
 }
 
-function getHumanChoice() {
-    let choice = prompt("Choose your warrior: Rock, Paper, or Scissors?");
+
+function getHumanChoice(clicked) {
+    let choice = clicked
     lower = choice.toLowerCase();
     out = `${lower.slice(0,1).toUpperCase() + lower.slice(1)}`;
     return out;
@@ -41,14 +42,14 @@ let computerScore = 0;
 function playRound(humanChoice, computerChoice) {
     let result = null
     if ((humanChoice === "Rock" && computerChoice === "Paper") || (humanChoice === "Paper" && computerChoice === "Scissors") || (humanChoice === "Scissors" && computerChoice==="Rock")) {
-        result = `You lose! ${computerChoice} beats ${humanChoice}`
         computerScore++
+        result = `You lose! ${computerChoice} beats ${humanChoice}!`
         return result;
     }
 
     if ((humanChoice === "Rock" && computerChoice === "Scissors") || (humanChoice === "Paper" && computerChoice === "Rock") || (humanChoice === "Scissors" && computerChoice === "Paper")) {
-        result = `You win! ${humanChoice} beats ${computerChoice}`;
         humanScore++
+        result = `You win! ${humanChoice} beats ${computerChoice}!`;
         return result;
     }
 
@@ -58,22 +59,63 @@ function playRound(humanChoice, computerChoice) {
     }
 }
 
-function playGame() {
-    for (let i = 0; i<5; i++) {
-        playRound(getHumanChoice(), getComputerChoice());
-    }
-    if (humanScore > computerScore) {
-        result = `Congratualtions, you win!`;
+
+function playGame(humanChoice, computerChoice) {
+    
+    if (humanScore === 5) {
+        result = `Congratulations, you win!`;
         return result;
     }
 
-    else {
+    if (computerScore === 5) {
         result = `Sorry, you lose!`;
         return result;
+    }
+    else {
+        return playRound(humanChoice, computerChoice);
     }
 }
 
 
-console.log(playGame());
-console.log(humanScore);
-console.log(computerScore);
+const buttonRock = document.createElement("button");
+const buttonPaper = document.createElement("button");
+const buttonScissors = document.createElement("button");
+
+const container = document.querySelector(".container");
+const buttondiv = document.querySelector(".buttondiv");
+const body = document.querySelector("body");
+let humanText = document.querySelector(".humanscore");
+let computerText = document.querySelector(".computerscore");
+humanText.textContent = `Human Score: ${humanScore}`
+computerText.textContent = `Computer Score: ${computerScore}`
+
+
+let updateText = document.querySelector(".statusText");
+updateText.textContent = "Welcome to Rock, Paper, Scissors! Choose your Warrior to begin!"
+
+buttondiv.appendChild(buttonRock);
+buttondiv.appendChild(buttonPaper);
+buttondiv.appendChild(buttonScissors);
+
+
+buttonRock.textContent = "ROCK";
+buttonPaper.textContent = "PAPER";
+buttonScissors.textContent = "SCISSORS";
+
+
+
+const buttons = document.querySelectorAll("button");
+
+buttons.forEach(button => button.addEventListener("mouseover", () => {
+    button.setAttribute("style", "background-color: orange; border: 4px solid; border-color: magenta;")
+}))
+
+buttons.forEach(button => button.addEventListener("mouseout", () => {
+    button.setAttribute("style", "background-color: lightblue;")
+}))
+
+let onclick = buttons.forEach(button => button.addEventListener("click", () => {
+    updateText.textContent = playGame(getHumanChoice(button.textContent), getComputerChoice())
+    humanText.textContent = `Human Score: ${humanScore}`
+    computerText.textContent = `Computer Score: ${computerScore}`
+}))
